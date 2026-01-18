@@ -3,8 +3,8 @@
 This repository was created as part of a Software Engineering project.It demonstrates how natural language processing, geospatial intelligence, market data analysis, and deep learning models 
 can be combined to build an intelligent assistant for analyzing and forecasting residential real estate properties in India.
 
-
-# Key Features
+---
+## Key Features
 
 * **Natural Language Query Processing** :
   Accepts free-form property queries and extracts structured information such as location, BHK, size, and user intent.
@@ -27,8 +27,8 @@ can be combined to build an intelligent assistant for analyzing and forecasting 
 * **Modular & Extensible Design**
   Clear separation of frontend, backend, AI/ML logic, and data integration components.
 
-
-# Folder Structure
+---
+## Folder Structure
 
 ```
 AI-REA/
@@ -41,8 +41,8 @@ AI-REA/
 └── README.md
 ```
 
-
-#  Setup Guide
+---
+##  Setup Guide
 
 ### 1. Create and Activate Virtual Environment
 
@@ -107,8 +107,8 @@ npm run dev
 
 * Frontend UI: `http://127.0.0.1:5173/`
 * Backend API Root: `http://127.0.0.1:8000/`
-
-# Tech Stack
+---
+## Tech Stack
 
 | Component                             | Description                              |
 | ------------------------------------- | ---------------------------------------- |
@@ -120,7 +120,7 @@ npm run dev
 | JavaScript Framework (React/Vite/Vue) | Frontend UI and dashboards               |
 | External APIs                         | Geocoding, amenities, and news data      |
 
-
+---
 ## Notes
 
 * Forecasts are probabilistic and include clearly stated uncertainty.
