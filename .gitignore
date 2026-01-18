@@ -1,0 +1,39 @@
+# Node.js / Vite / Vue
+node_modules/
+dist/
+build/
+*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python environments
+venv/
+env/
+.env
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Django/Flask migrations 
+migrations/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Coverage / testing
+coverage/
+*.coverage
+.pytest_cache/

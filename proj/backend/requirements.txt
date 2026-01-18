@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+python-dotenv
+requests
+torch
+numpy
+scikit-learn
+pandas
+plotly
+folium
+streamlit
+streamlit-folium
