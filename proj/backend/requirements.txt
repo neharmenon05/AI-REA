@@ -10,3 +10,6 @@ plotly
 folium
 streamlit
 streamlit-folium
+langgraph
+langchain-google-genai
+langchain-core

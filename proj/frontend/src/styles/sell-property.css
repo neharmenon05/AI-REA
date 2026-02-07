@@ -1,0 +1,120 @@
+body {
+  background: #ffffff; /* plain white background */
+  font-family: 'Poppins', sans-serif;
+  color: #000000; /* standard black text */
+}
+
+/* Container */
+.sell-container {
+  max-width: 750px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+/* Title */
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #000000;
+}
+
+/* Card */
+.card {
+  background: #ffffff;
+  border-radius: 0;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: none;
+  border: 1px solid #ddd;
+}
+
+/* Labels and inputs */
+label {
+  display: block;
+  margin: 12px 0 6px;
+  font-weight: 500;
+  color: #333333;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  background: #ffffff;
+  color: #000000;
+  font-size: 14px;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #999999;
+}
+
+textarea {
+  min-height: 120px;
+}
+
+/* Progress bar */
+.progress {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.step {
+  width: 18%;
+  padding: 8px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 13px;
+  background: #f0f0f0;
+  color: #666666;
+}
+
+.step.active {
+  background: #00796b;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* Navigation buttons */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #ffffff;
+  background: #00796b;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #004d40;
+}
+
+.submit {
+  background: #00bfa5;
+}
+
+.submit:hover {
+  opacity: 0.9;
+}
+
+/* Image preview */
+.preview img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  margin-right: 10px;
+  margin-top: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}

@@ -28,7 +28,7 @@ def forecast_price(req: ForecastRequest):
     
     try:
         print(f"\n{'='*60}")
-        print(f"📈 FORECAST REQUEST")
+        print(f"FORECAST REQUEST")
         print(f"{'='*60}")
         print(f"Current price: ₹{req.current_price:,.0f}")
         print(f"Forecast years: {req.years}\n")
@@ -47,7 +47,7 @@ def forecast_price(req: ForecastRequest):
         forecaster = TinyLSTMForecaster()
         result = forecaster.forecast(req.current_price, years_to_forecast=req.years)
         
-        print(f"✅ Forecast complete")
+        print(f"Forecast complete")
         print(f"{'='*60}\n")
         
         return ForecastResponse(
@@ -59,5 +59,5 @@ def forecast_price(req: ForecastRequest):
     except HTTPException:
         raise
     except Exception as e:
-        print(f"❌ Forecast error: {e}\n")
+        print(f"Forecast error: {e}\n")
         raise HTTPException(status_code=500, detail=f"Forecasting failed: {str(e)}")

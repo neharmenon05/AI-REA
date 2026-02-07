@@ -50,7 +50,7 @@ def analyze_property(req: AnalyzeRequest):
     
     try:
         print(f"\n{'='*70}")
-        print(f"🔍 PROPERTY ANALYSIS REQUEST: {req.query}")
+        print(f" PROPERTY ANALYSIS REQUEST: {req.query}")
         print(f"{'='*70}\n")
         
         # STEP 1: Extract Entities from Query
@@ -62,11 +62,11 @@ def analyze_property(req: AnalyzeRequest):
         bhk = entities.get("bhk") or 2
         size_sqft = entities.get("size_sqft") or 1000
         
-        print(f"📋 Extracted entities:")
-        print(f"   • City: {city}")
-        print(f"   • Area: {area or 'Not specified'}")
-        print(f"   • BHK: {bhk}")
-        print(f"   • Size: {size_sqft} sqft\n")
+        print(f"Extracted entities:")
+        print(f"    City: {city}")
+        print(f"    Area: {area or 'Not specified'}")
+        print(f"    BHK: {bhk}")
+        print(f"    Size: {size_sqft} sqft\n")
         
         # STEP 2: Geocode Location
         lat = lng = None
@@ -77,11 +77,11 @@ def analyze_property(req: AnalyzeRequest):
             geo_res = geo.geocode(location_str)
             if geo_res:
                 lat, lng, loc_data = geo_res
-                print(f"📍 Geocoded: {location_str} → ({lat:.4f}, {lng:.4f})\n")
+                print(f" Geocoded: {location_str} → ({lat:.4f}, {lng:.4f})\n")
             else:
-                print(f"⚠️ Geocoding failed for: {location_str}\n")
+                print(f" Geocoding failed for: {location_str}\n")
         except Exception as e:
-            print(f"⚠️ Geocoding error: {e}\n")
+            print(f" Geocoding error: {e}\n")
             lat, lng, loc_data = None, None, {}
 
         # STEP 3: Fetch Amenities
@@ -94,12 +94,12 @@ def analyze_property(req: AnalyzeRequest):
                     len(v.get('places', [])) if isinstance(v, dict) and 'places' in v else 0
                     for v in amenities.values()
                 )
-                print(f"🏢 Fetched amenities: {amenity_count} total facilities\n")
+                print(f" Fetched amenities: {amenity_count} total facilities\n")
             else:
                 amenities = {"note": "Amenities skipped — no geolocation available"}
-                print(f"⚠️ Skipping amenities: No geolocation\n")
+                print(f" Skipping amenities: No geolocation\n")
         except Exception as e:
-            print(f"⚠️ Amenities fetch error: {e}\n")
+            print(f" Amenities fetch error: {e}\n")
             amenities = {"error": str(e)}
 
         # STEP 4: Search News
@@ -112,12 +112,12 @@ def analyze_property(req: AnalyzeRequest):
             
             if not news_results:
                 news_results = [{"note": "No news items found for this location."}]
-                print(f"ℹ️ No news found for: {news_query}\n")
+                print(f"ℹ No news found for: {news_query}\n")
             else:
                 valid_news = [n for n in news_results if isinstance(n, dict) and 'error' not in n and 'note' not in n]
-                print(f"📰 Fetched news: {len(valid_news)} relevant articles\n")
+                print(f" Fetched news: {len(valid_news)} relevant articles\n")
         except Exception as e:
-            print(f"⚠️ News search error: {e}\n")
+            print(f" News search error: {e}\n")
             news_results = [{"error": str(e)}]
 
         # STEP 5: Run Forecaster with Full Context
@@ -157,10 +157,10 @@ def analyze_property(req: AnalyzeRequest):
             forecast_explanation = forecast_data.get('explanation', '')
             methodology = forecast_data.get('methodology', methodology)
             
-            print(f"✅ Forecast complete: Current ₹{estimated_current_price:,.0f}, 5yr ₹{forecast_data.get('predicted_5', 0):,.0f}\n")
+            print(f" Forecast complete: Current ₹{estimated_current_price:,.0f}, 5yr ₹{forecast_data.get('predicted_5', 0):,.0f}\n")
             
         except Exception as e:
-            print(f"⚠️ Forecaster error: {e}\n")
+            print(f" Forecaster error: {e}\n")
             # Fallback forecast
             fallback_base = bhk * size_sqft * 2000  # ₹2000/sqft default
             estimated_current_price = fallback_base
@@ -184,49 +184,80 @@ def analyze_property(req: AnalyzeRequest):
             area=area
         )
         
-        print(f"⚠️ Risk assessment: {risk}")
+        print(f" Risk assessment: {risk}")
         print(f"   {risk_explanation}\n")
 
         # STEP 7: Generate Comprehensive Explanation
         try:
-            if not forecast_explanation:
+            explanation = forecast_explanation
+
+            if not explanation or len(str(explanation).strip()) < 50:
                 gem = GeminiWrapper()
                 
-                amenity_count = forecast_data.get('amenity_count', 0)
-                news_pos = forecast_data.get('news_pos', 0)
-                news_neg = forecast_data.get('news_neg', 0)
-                predicted_5yr = forecast_data.get('predicted_5', estimated_current_price)
-                overall_score = forecast_data.get('score', 0.5)
-                
-                location_str = f"{area}, {city}" if area else city
-                
-                prompt = (
-                    f"Provide a professional investment analysis for: '{req.query}'\n\n"
-                    f"Property: {bhk} BHK, {size_sqft} sqft in {location_str}\n"
-                    f"Current price: ₹{estimated_current_price:,.0f} (₹{price_per_sqft:,.0f}/sqft)\n"
-                    f"Amenities: {amenity_count} facilities (boost: {amenity_boost_pct:.1f}%)\n"
-                    f"News: {news_pos} positive, {news_neg} negative (impact: {news_impact_pct:+.1f}%)\n"
-                    f"Risk: {risk}\n"
-                    f"5-year forecast: ₹{predicted_5yr:,.0f}\n"
-                    f"Investment score: {overall_score:.2f}/1.0\n\n"
-                    "Provide: (1) Investment outlook, (2) Key drivers, (3) Risk factors. "
-                    "Under 200 words, specific and actionable."
-                )
-                
-                explanation = gem.generate_explanation(prompt)
-            else:
-                explanation = forecast_explanation
-                
-        except Exception as e:
-            print(f"⚠️ Explanation generation error: {e}\n")
-            explanation = forecast_explanation or f"Property analysis for {bhk} BHK in {city} with estimated price ₹{estimated_current_price:,.0f}."
+                # Safe value extraction
+                location_str = f"{area}, {city}" if area else (city if city else "the area")
+                current_price = float(estimated_current_price) if estimated_current_price else 0
+                price_sqft = float(price_per_sqft) if price_per_sqft else 0
+                amenity_pct = float(amenity_boost_pct) if amenity_boost_pct is not None else 0
+                news_pct = float(news_impact_pct) if news_impact_pct is not None else 0
+                forecast_5yr = float(forecast_data.get('predicted_5', current_price * 1.2)) if forecast_data.get('predicted_5') else current_price * 1.2
+                inv_score = float(forecast_data.get('score', 0.5)) if forecast_data.get('score') is not None else 0.5
+                bhk_val = bhk if bhk else 2
+                size_val = size_sqft if size_sqft else 1000
+                risk_val = risk if risk else "Moderate"
 
+                prompt = f'''Provide a professional real estate investment analysis.
+
+Property: {bhk_val} BHK, {size_val} sqft in {location_str}
+Current price: Rs {current_price:,.0f} (Rs {price_sqft:,.0f}/sqft)
+Amenities impact: {amenity_pct:.1f}%
+News impact: {news_pct:+.1f}%
+Risk Level: {risk_val}
+5-Year Forecast: Rs {forecast_5yr:,.0f}
+Investment Score: {inv_score:.2f}/1.0
+
+Explain outlook, drivers, and risks in one paragraph.'''
+
+                explanation = gem.generate_explanation(prompt, debug=True)
+
+                if not explanation or len(explanation.strip()) < 20:
+                    raise ValueError("Insufficient response from Gemini")
+
+        except Exception as e:
+            print(f"WARNING STEP 7: {e}")
+            
+            try:
+                # Data-driven fallback with safe extraction
+                location_str = f"{area}, {city}" if area else (city if city else "the area")
+                current_price = float(estimated_current_price) if estimated_current_price else 10000000
+                forecast_5yr = float(forecast_data.get('predicted_5', current_price * 1.2)) if forecast_data.get('predicted_5') else current_price * 1.2
+                inv_score = float(forecast_data.get('score', 0.5)) if forecast_data.get('score') is not None else 0.5
+                
+                growth_pct = ((forecast_5yr - current_price) / current_price * 100) if current_price > 0 else 20.0
+                growth_term = "strong" if growth_pct > 30 else "steady" if growth_pct > 15 else "modest"
+                score_term = "attractive" if inv_score > 0.7 else "balanced"
+                bhk_val = bhk if bhk else 2
+                risk_val = risk if risk else "Moderate"
+                
+                explanation = (
+                    f"The {bhk_val} BHK property in {location_str} priced near Rs {current_price:,.0f} "
+                    f"shows {growth_term} long-term potential with an estimated {growth_pct:.1f}% appreciation. "
+                    f"The {risk_val.lower()} risk profile is supported by infrastructure and demand patterns, "
+                    f"with investment score of {inv_score:.2f} indicating a {score_term} opportunity. "
+                    f"While short-term fluctuations may occur, fundamentals suggest stable growth prospects."
+                )
+            except:
+                explanation = (
+                    "The property presents balanced long-term investment potential supported by "
+                    "local infrastructure and steady demand patterns, with moderate market risks."
+                )
+        
         # STEP 8: Build Response Summary
         loc_text = f"{area}, {city}" if area else city
         summary = f"{bhk} BHK property in {loc_text}, {size_sqft} sqft. Current estimated price: ₹{estimated_current_price:,.0f}"
         
         print(f"{'='*70}")
-        print(f"✅ ANALYSIS COMPLETE")
+        print(f" ANALYSIS COMPLETE")
         print(f"{'='*70}\n")
 
         return AnalyzeResponse(
@@ -264,7 +295,7 @@ def analyze_property(req: AnalyzeRequest):
         )
         
     except Exception as e:
-        print(f"❌ Critical error in analyze_property: {e}\n")
+        print(f" Critical error in analyze_property: {e}\n")
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
 
 
@@ -370,16 +401,16 @@ def _compute_risk_assessment(news_results, amenities, forecast_data, city, area)
     explanation_parts = [f"Risk assessment for {location_str}:"]
     
     if risk_factors:
-        explanation_parts.append(f"\n\n⚠️ Concerns: {' • '.join(risk_factors)}.")
+        explanation_parts.append(f"\n\n Concerns: {' • '.join(risk_factors)}.")
     
     if positive_factors:
-        explanation_parts.append(f"\n\n✓ Strengths: {' • '.join(positive_factors)}.")
+        explanation_parts.append(f"\n\n Strengths: {' • '.join(positive_factors)}.")
     
     if not risk_factors and not positive_factors:
-        explanation_parts.append("\n\nBalanced market conditions with moderate indicators.")
+        explanation_parts.append("\n\n Balanced market conditions with moderate indicators.")
     
     # Add Recommendation
-    explanation_parts.append("\n\n💡 Recommendation: ")
+    explanation_parts.append("\n\n Recommendation: ")
     if risk_level == "High Risk":
         explanation_parts.append("Conduct extensive due diligence. Consider postponing investment until market stabilizes.")
     elif risk_level == "Medium Risk":

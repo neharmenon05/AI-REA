@@ -670,3 +670,74 @@ padding: 24px 20px;
 font-size: 18px;
 }
 }
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.query-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.query-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.voice-btn {
+  padding: 12px;
+  background: #3b82f6;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  min-width: 48px;
+  height: 48px;
+}
+
+.voice-btn:hover {
+  background: #2563eb;
+  transform: scale(1.05);
+}
+
+.voice-btn.listening {
+  background: #ef4444;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.listening-indicator {
+  color: #ef4444;
+  font-size: 14px;
+  margin-top: 8px;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,35 @@
+.language-switcher {
+  display: inline-block;
+}
+
+.language-select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.language-select:hover {
+  border-color: #94a3b8;
+}
+
+.language-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Dark mode support (if your app has it) */
+.dark .language-select {
+  background: #1e293b;
+  border-color: #334155;
+  color: #e2e8f0;
+}
+
+.dark .language-select:hover {
+  border-color: #475569;
+}

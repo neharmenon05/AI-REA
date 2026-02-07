@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { useTranslation } from "react-i18next";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
 const formatCurrency = (v) => typeof v==="number"? `₹ ${v.toLocaleString("en-IN")}`:"Not available";

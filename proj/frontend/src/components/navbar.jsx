@@ -4,7 +4,6 @@ import { useAuth } from "../auth/AuthContext";
 
 export default function Navbar() {
   const { user } = useAuth();
-
   const logout = async () => {
     await supabase.auth.signOut();
     window.location.href = "/";
@@ -21,6 +20,7 @@ export default function Navbar() {
           {user ? (
             <>
               <Link to="/dashboard" className="nav-link">Dashboard</Link>
+               <Link to="/marketplace" className="nav-link">Marketplace</Link>
               <Link to="/about" className="nav-link">About</Link>
               <button onClick={logout} className="btn-logout">Logout</button>
             </>

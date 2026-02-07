@@ -1,0 +1,87 @@
+.marketplace-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1)),
+              url('https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTEyL3NtYWxsZGVzaWduY29tcGFueTAxX2RpZ2l0YWxfcGFpbnRfaWxsdXN0cmF0aW9uX29mX2FfbGFuZHNjYXBlX19lZTc2ZjM4MC0wYmI0LTRlZDQtYjNiOS0zODMwM2JhNDlkMDNfMS5qcGc.jpg') center/cover fixed;
+  background-blend-mode: overlay;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* 🧊 White Card */
+.marketplace-card {
+  background: white;
+  padding: 60px 50px;
+  border-radius: 20px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  max-width: 800px;
+  width: 100%;
+  animation: fadeUp 0.8s ease forwards;
+}
+
+/* Title */
+.marketplace-card h1 {
+  font-size: 40px;
+  margin-bottom: 10px;
+  color: #1e293b;
+}
+
+.marketplace-card p {
+  font-size: 18px;
+  color: #64748b;
+  margin-bottom: 40px;
+}
+
+/* Action Grid */
+.marketplace-actions {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Individual Action */
+.action-card {
+  background: #f8fafc;
+  padding: 30px 25px;
+  border-radius: 16px;
+  width: 180px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.action-card:hover {
+  transform: translateY(-6px);
+  background: white;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Icons */
+.action-icon {
+  font-size: 32px;
+  color: #2563eb;
+  margin-bottom: 12px;
+}
+
+.action-card span {
+  display: block;
+  font-weight: 600;
+  font-size: 16px;
+  color: #1e293b;
+}
+
+/* Animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
